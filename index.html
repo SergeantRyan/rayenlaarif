@@ -14,7 +14,7 @@
             --text-light: #6B6B6B;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Urbanist', sans-serif;
@@ -22,18 +22,6 @@
             color: var(--primary);
             overflow-x: hidden;
             line-height: 1.6;
-        }
-
-        #cursor {
-            position: fixed; width: 20px; height: 20px;
-            border: 2px solid var(--accent); border-radius: 50%;
-            pointer-events: none; z-index: 10000;
-            transition: transform 0.2s ease; mix-blend-mode: difference;
-        }
-        #cursor-dot {
-            position: fixed; width: 4px; height: 4px;
-            background: var(--accent); border-radius: 50%;
-            pointer-events: none; z-index: 10001;
         }
 
         header {
@@ -162,26 +150,26 @@
 
         /* EXPERIENCE */
         .experience { padding: 8rem 4rem; background: var(--secondary); }
-        .timeline { margin-top: 4rem; position: relative; }
-        .timeline::before {
-            content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-            width: 2px; background: var(--accent); opacity: 0.3;
+        .exp-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 3rem; margin-top: 4rem;
         }
-        .timeline-item {
-            padding-left: 3rem; margin-bottom: 4rem; position: relative;
+        .exp-card {
+            padding: 2.5rem; background: white;
+            border-top: 3px solid var(--accent);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .timeline-item::before {
-            content: ''; position: absolute; left: -6px; top: 8px;
-            width: 14px; height: 14px; border-radius: 50%;
-            background: var(--accent); border: 2px solid var(--secondary);
+        .exp-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         }
-        .timeline-date { font-size: 0.85rem; color: var(--accent); font-weight: 600; margin-bottom: 0.5rem; }
-        .timeline-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.25rem; }
-        .timeline-company { font-size: 1rem; color: var(--text-light); font-weight: 300; margin-bottom: 1rem; }
+        .timeline-date { font-size: 0.85rem; color: var(--accent); font-weight: 600; margin-bottom: 0.75rem; }
+        .timeline-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .timeline-company { font-size: 0.95rem; color: var(--primary); font-weight: 400; margin-bottom: 1.25rem; opacity: 0.7; }
         .timeline-list { list-style: none; }
         .timeline-list li {
-            font-size: 0.95rem; color: var(--text-light); font-weight: 300;
-            padding: 0.4rem 0; padding-left: 1.2rem; position: relative;
+            font-size: 0.92rem; color: var(--primary); font-weight: 400;
+            padding: 0.35rem 0; padding-left: 1.2rem; position: relative;
         }
         .timeline-list li::before {
             content: '—'; position: absolute; left: 0; color: var(--accent); font-size: 0.8rem;
@@ -267,10 +255,10 @@
             .hero { padding-top: 8rem; }
             .about { grid-template-columns: 1fr; padding: 4rem 1.5rem; gap: 3rem; }
             .projects-grid { grid-template-columns: 1fr; }
+            .exp-grid { grid-template-columns: 1fr; }
             .skills-grid { grid-template-columns: 1fr; }
             .geometric-accent { display: none; }
-            #cursor, #cursor-dot { display: none; }
-            * { cursor: auto; }
+
         }
 
         /* REVEAL */
@@ -279,9 +267,6 @@
     </style>
 </head>
 <body>
-    <div id="cursor"></div>
-    <div id="cursor-dot"></div>
-
     <header>
         <div class="logo">Rayen Laarif</div>
         <nav>
@@ -396,9 +381,9 @@
         <h2 class="section-title reveal">Expériences</h2>
         <p class="section-subtitle reveal" style="color: var(--accent-dark);">Professionnelles & associatives</p>
 
-        <div class="timeline">
-            <div class="timeline-item reveal">
-                <div class="timeline-date">Juil. 2024 — Sept. 2024</div>
+        <div class="exp-grid">
+            <div class="exp-card reveal">
+                <div class="timeline-date">Juil. 2024 — Sept. 2024 · Stage</div>
                 <div class="timeline-title">Développement Python — Analyse de données</div>
                 <div class="timeline-company">INU Champollion · Albi, France</div>
                 <ul class="timeline-list">
@@ -409,8 +394,8 @@
                 </ul>
             </div>
 
-            <div class="timeline-item reveal">
-                <div class="timeline-date">Sept. 2023 — Mai 2025</div>
+            <div class="exp-card reveal">
+                <div class="timeline-date">Sept. 2023 — Mai 2025 · Associatif</div>
                 <div class="timeline-title">Secrétaire</div>
                 <div class="timeline-company">Association ALEA · Albi, France</div>
                 <ul class="timeline-list">
@@ -523,22 +508,6 @@
     </footer>
 
     <script>
-        const cursor = document.getElementById('cursor');
-        const cursorDot = document.getElementById('cursor-dot');
-
-        if (window.innerWidth > 768) {
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.left = e.clientX + 'px';
-                cursor.style.top = e.clientY + 'px';
-                cursorDot.style.left = e.clientX + 'px';
-                cursorDot.style.top = e.clientY + 'px';
-            });
-            document.querySelectorAll('a, .project-card').forEach(el => {
-                el.addEventListener('mouseenter', () => cursor.style.transform = 'scale(2)');
-                el.addEventListener('mouseleave', () => cursor.style.transform = 'scale(1)');
-            });
-        }
-
         const reveals = document.querySelectorAll('.reveal');
         function checkReveal() {
             reveals.forEach(el => {
